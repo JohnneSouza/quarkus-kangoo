@@ -33,6 +33,12 @@ public class ProductResource {
         return productService.findAll(category);
     }
 
+    @PUT
+    @Path("{id}")
+    public String updateProduct(@PathParam("id") String id, Product product){
+        return productService.updateProduct(id, product);
+    }
+
 }
 
 

@@ -8,6 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -17,15 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @QuarkusTestResource(MongoContainer.class)
-
 class ProductResourcesIT {
 
     private static final String PRODUCTS_PATH = "/products";
@@ -73,24 +70,44 @@ class ProductResourcesIT {
         Product[] productListResponse = response.getBody().as(Product[].class);
 
         // ProductMock.allFields() by default will set category as Books;
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode());
         assertEquals(2, productListResponse.length);
     }
 
     @Test
     void shouldSuccessfullyUpdateProduct() {
-//        given().body(ProductMock.allFields())
-//                .contentType(ContentType.JSON)
-//                .when()
-//                .post(PRODUCTS_PATH).prettyPeek().thenReturn()
-//                .then()
-//                .statusCode(201)
-//                .body(is(instanceOf(String.class)));
+        Product productToUpdate = ProductMock.allFields();
+        productToUpdate.setId(UUID);
+        productToUpdate.setColor("color");
+        productToUpdate.setDescription("description");
+        productToUpdate.setStockAmount(40);
+
+        given().body(productToUpdate)
+                .contentType(ContentType.JSON)
+                .when()
+                .put(PRODUCTS_PATH + "/" + UUID).prettyPeek().thenReturn()
+                .then()
+                .statusCode(HttpStatus.SC_OK);
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(PRODUCTS_PATH + "/" + UUID)
+                .thenReturn();
+
+        Product productResponse = response.getBody().as(Product.class);
+
+        assertNotNull(productResponse.getUpdatedDate());
+        assertNotNull(productResponse.getCreatedDate());
+        assertEquals(productToUpdate.getDescription(), productResponse.getDescription());
+        assertEquals(productToUpdate.getCreatedDate(), productResponse.getCreatedDate());
+        assertEquals(productToUpdate.getCategory(), productResponse.getCategory());
+        assertEquals(productToUpdate.getColor(), productResponse.getColor());
     }
 
     @Test
     @Order(2)
-    void shouldSuccessfullyFindProduct() {
+    void shouldSuccessfullyFindProductById() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -100,7 +117,7 @@ class ProductResourcesIT {
         Product productResponse = response.getBody().as(Product.class);
 
         assertEquals(UUID, productResponse.getId());
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode());
         assertEquals(ProductMock.allFields().getCategory(), productResponse.getCategory());
         assertEquals(ProductMock.allFields().getColor(), productResponse.getColor());
         assertEquals(ProductMock.allFields().getCreatedDate(), productResponse.getCreatedDate());
@@ -109,7 +126,15 @@ class ProductResourcesIT {
     }
 
     @Test
-    void shouldSuccessfullyRetrieveProducts() {
+    void shouldNotRetrieveProductWhenIdDoNotExist(){
+        given().contentType(ContentType.JSON)
+                .when()
+                .get(PRODUCTS_PATH + "/" + java.util.UUID.randomUUID().toString())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
+    @Test
+    void shouldSuccessfullyRetrieveAllProducts() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -118,7 +143,7 @@ class ProductResourcesIT {
 
         Product[] productListResponse = response.getBody().as(Product[].class);
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode());
         assertEquals(4, productListResponse.length);
 
     }

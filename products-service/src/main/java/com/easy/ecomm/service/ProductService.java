@@ -18,7 +18,11 @@ public class ProductService {
     }
 
     public Product findById(String id){
-        return productRepository.findById(id);
+        return productRepository.findProductById(id);
+    }
+
+    public String updateProduct(String productId, Product product) {
+        return productRepository.updateProduct(productId, product);
     }
 
     public Stream<Product> findAll(String category) {
@@ -31,5 +35,4 @@ public class ProductService {
     public Stream<Product> findByCategory(String category) {
         return productRepository.findByCategory(category);
     }
-
 }
