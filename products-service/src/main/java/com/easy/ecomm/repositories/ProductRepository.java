@@ -2,8 +2,10 @@ package com.easy.ecomm.repositories;
 
 import com.easy.ecomm.model.Product;
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase;
+import lombok.SneakyThrows;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -18,16 +20,18 @@ public class ProductRepository implements PanacheMongoRepositoryBase<Product, St
             return product.getId();
         }
 
-        public String updateProduct(Product product){
-            Product productFound = findById(product.getId());
+        public String updateProduct(String productId, Product product){
+            findProductById(productId);
+            product.setId(productId);
             product.setUpdatedDate(LocalDate.now());
-            persistOrUpdate(product);
+            update(product);
             return product.getId();
-
         }
 
-        public Product findById(String id){
-            return find("_id", id).firstResult();
+        @SneakyThrows
+        public Product findProductById(String productId){
+            return findByIdOptional(productId).orElseThrow(() ->
+                    new NotFoundException(String.format("[%s] Product not found", productId)));
         }
 
         public Stream<Product> findByCategory(String category){
