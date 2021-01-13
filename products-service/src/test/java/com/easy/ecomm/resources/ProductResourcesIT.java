@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,8 +100,11 @@ class ProductResourcesIT {
 
         assertNotNull(productResponse.getUpdatedDate());
         assertNotNull(productResponse.getCreatedDate());
+
+        assertEquals(LocalDate.now(), productResponse.getCreatedDate());
+        assertEquals(LocalDate.now(), productResponse.getUpdatedDate());
+
         assertEquals(productToUpdate.getDescription(), productResponse.getDescription());
-        assertEquals(productToUpdate.getCreatedDate(), productResponse.getCreatedDate());
         assertEquals(productToUpdate.getCategory(), productResponse.getCategory());
         assertEquals(productToUpdate.getColor(), productResponse.getColor());
     }
@@ -116,11 +120,12 @@ class ProductResourcesIT {
 
         Product productResponse = response.getBody().as(Product.class);
 
+        assertNull(productResponse.getUpdatedDate());
         assertEquals(UUID, productResponse.getId());
         assertEquals(HttpStatus.SC_OK, response.getStatusCode());
         assertEquals(ProductMock.allFields().getCategory(), productResponse.getCategory());
         assertEquals(ProductMock.allFields().getColor(), productResponse.getColor());
-        assertEquals(ProductMock.allFields().getCreatedDate(), productResponse.getCreatedDate());
+        assertEquals(LocalDate.now(), productResponse.getCreatedDate());
         assertNull(productResponse.getUpdatedDate());
 
     }

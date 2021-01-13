@@ -21,7 +21,6 @@ public final class ProductMock {
     public static Product allFields(){
         Product product = onlyMandatoryFields();
         product.setColor("Blue");
-        product.setCreatedDate(LocalDate.now());
         product.setPrice(Math.random() * 42);
         product.setId(UUID.randomUUID().toString());
         product.setStockAmount(42);

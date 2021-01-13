@@ -16,12 +16,14 @@ public class ProductRepository implements PanacheMongoRepositoryBase<Product, St
         public String saveProduct(Product product){
             product.setId(UUID.randomUUID().toString());
             product.setCreatedDate(LocalDate.now());
+            product.setUpdatedDate(null);
             persistOrUpdate(product);
             return product.getId();
         }
 
         public String updateProduct(String productId, Product product){
-            findProductById(productId);
+            Product productFound = findProductById(productId);
+            product.setCreatedDate(productFound.getCreatedDate());
             product.setId(productId);
             product.setUpdatedDate(LocalDate.now());
             update(product);
