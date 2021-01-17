@@ -1,6 +1,7 @@
 package com.easy.ecomm.resources;
 
 import com.easy.ecomm.model.User;
+import com.easy.ecomm.model.UserDTO;
 import com.easy.ecomm.service.UserService;
 
 import javax.inject.Inject;
@@ -16,23 +17,23 @@ public class UserResources {
     UserService userService;
 
     @POST
-    public User saveUser(User user){
+    public UserDTO saveUser(User user){
         return userService.saveUser(user);
     }
 
     @GET
-    public Iterable<User> findAll(){
+    public Iterable<UserDTO> findAll(){
         return userService.findAll();
     }
     @GET
     @Path("{id}")
-    public User findByUserById(@PathParam("id") int id){
+    public UserDTO findByUserById(@PathParam("id") int id){
         return userService.findUserById(id);
     }
 
     @GET
     @Path("email/{email}")
-    public User findUserByEmail(@PathParam("email") String email){
+    public UserDTO findUserByEmail(@PathParam("email") String email){
         return userService.finderByEmail(email);
     }
 
