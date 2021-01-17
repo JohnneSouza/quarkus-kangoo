@@ -1,23 +1,22 @@
 package com.easy.ecomm.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Data
-@Entity(name = "users")
-public class User {
+@Entity
+@EqualsAndHashCode(callSuper = true)
+public class User extends UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private static final String PWD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>])$";
+    private static final int PWD_MIN_LEN = 8;
+
+    @Size(min = PWD_MIN_LEN)
     private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private boolean active;
 
 }
+
+
