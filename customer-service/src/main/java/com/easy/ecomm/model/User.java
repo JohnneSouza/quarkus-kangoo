@@ -1,22 +1,29 @@
 package com.easy.ecomm.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.Size;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
-@Entity
-@EqualsAndHashCode(callSuper = true)
-public class User extends UserDTO {
+@Builder
+@Entity(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
 
-    private static final String PWD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>])$";
-    private static final int PWD_MIN_LEN = 8;
-
-    @Size(min = PWD_MIN_LEN)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String password;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private boolean active;
 
 }
-
-
