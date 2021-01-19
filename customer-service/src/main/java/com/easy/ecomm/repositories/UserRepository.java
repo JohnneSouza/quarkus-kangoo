@@ -1,22 +1,22 @@
 package com.easy.ecomm.repositories;
 
-import com.easy.ecomm.model.UserDTO;
+import com.easy.ecomm.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends PagingAndSortingRepository<UserDTO, Integer> {
+public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
 
     @Override
-    Page<UserDTO> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable);
 
     @Override
-    <S extends UserDTO> S save(S s);
+    <S extends User> S save(S s);
 
     @Override
-    Optional<UserDTO> findById(Integer s);
+    Optional<User> findById(Integer s);
 
     @Override
     boolean existsById(Integer s);
@@ -24,5 +24,5 @@ public interface UserRepository extends PagingAndSortingRepository<UserDTO, Inte
     @Override
     void deleteById(Integer s);
 
-    Optional<UserDTO> findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
 }

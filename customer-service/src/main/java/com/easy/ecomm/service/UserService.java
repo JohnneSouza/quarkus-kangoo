@@ -1,7 +1,9 @@
 package com.easy.ecomm.service;
 
-import com.easy.ecomm.model.UserDTO;
+import com.easy.ecomm.model.User;
+import com.easy.ecomm.model.UserRegisterRequest;
 import com.easy.ecomm.repositories.UserRepository;
+import com.easy.ecomm.translator.UserTranslator;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -16,23 +18,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO saveUser(UserDTO userDTO){
-        userDTO.setPassword(BcryptUtil.bcryptHash(userDTO.getPassword()));
-        return userRepository.save(userDTO);
+    public User saveUser(UserRegisterRequest user){
+        user.setPassword(BcryptUtil.bcryptHash(user.getPassword()));
+        User newUser = UserTranslator.userRegisterRequestToUser(user);
+        return UserTranslator.userToUserRegisterResponse(userRepository.save(newUser));
     }
 
-    public UserDTO findUserById(int id){
+    public User findUserById(int id){
         return userRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
     }
 
-    public UserDTO finderByEmail(String email){
+    public User finderByEmail(String email){
         return userRepository.findUserByEmail(email)
                 .orElseThrow(NotFoundException::new);
     }
 
 
-    public Iterable<UserDTO> findAll() {
+    public Iterable<User> findAll() {
         return userRepository.findAll();
     }
 }
