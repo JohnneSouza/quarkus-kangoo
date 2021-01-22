@@ -1,10 +1,12 @@
 package com.easy.ecomm.resources;
 
 import com.easy.ecomm.model.User;
-import com.easy.ecomm.model.UserRegisterRequest;
+import com.easy.ecomm.model.dto.UserDto;
 import com.easy.ecomm.service.UserService;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,9 +20,10 @@ public class UserResources {
     UserService userService;
 
     @POST
-    public Response saveUser(UserRegisterRequest user){
+    @Transactional
+    public Response saveUser(@Valid UserDto user){
         return Response.status(Response.Status.CREATED)
-                .entity(userService.saveUser(user)).build();
+                .entity(userService.saveUser(user, user.getPassword())).build();
     }
 
     @GET

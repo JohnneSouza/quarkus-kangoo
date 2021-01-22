@@ -1,28 +1,27 @@
 package com.easy.ecomm.repositories;
 
 import com.easy.ecomm.model.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
+@ApplicationScoped
+public class UserRepository implements PanacheRepository<User> {
 
-    @Override
-    Page<User> findAll(Pageable pageable);
+    public Optional<User> findUserByEmail(String email){
+        return find("email", email).firstResultOptional();
+    }
 
-    @Override
-    <S extends User> S save(S s);
+    public Optional<User> findById(long id){
+        return findByIdOptional(id);
+    }
 
-    @Override
-    Optional<User> findById(Integer s);
+    public User save(User user){
+        persist(user);
+        return user;
+    }
 
-    @Override
-    boolean existsById(Integer s);
 
-    @Override
-    void deleteById(Integer s);
 
-    Optional<User> findUserByEmail(String email);
 }
