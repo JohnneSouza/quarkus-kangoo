@@ -9,12 +9,13 @@ public class UserDtoMock {
     }
 
     public static UserDto onlyMandatoryFields(){
-        return UserDto.builder()
-                .password("123Abc!@")
-                .email(StringUtils.generateRandomEmail())
-                .firstName(StringUtils.generateRandomString(8))
-                .lastName(StringUtils.generateRandomString(8))
-                .build();
+        UserDto userDto = new UserDto();
+        userDto.setPassword("Pass123!@");
+        userDto.setEmail(StringUtils.generateRandomEmail());
+        userDto.setFirstName(StringUtils.generateRandomString(8));
+        userDto.setLastName(StringUtils.generateRandomString(8));
+
+        return userDto;
     }
 
     public static UserDto withoutPassword(){

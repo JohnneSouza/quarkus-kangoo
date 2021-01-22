@@ -1,13 +1,14 @@
 package com.easy.ecomm.service;
 
 import com.easy.ecomm.model.User;
-import com.easy.ecomm.model.UserRegisterRequest;
+import com.easy.ecomm.model.dto.UserDto;
 import com.easy.ecomm.repositories.UserRepository;
-import com.easy.ecomm.translator.UserTranslator;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.NotFoundException;
+import java.time.LocalDate;
+import java.util.List;
 
 @ApplicationScoped
 public class UserService {
@@ -18,13 +19,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(UserRegisterRequest user){
-        user.setPassword(BcryptUtil.bcryptHash(user.getPassword()));
-        User newUser = UserTranslator.userRegisterRequestToUser(user);
-        return UserTranslator.userToUserRegisterResponse(userRepository.save(newUser));
+    public User saveUser(UserDto userDto, String password){
+        return userRepository.save(
+                User.builder()
+                .password(BcryptUtil.bcryptHash(password))
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
+                .createdAt(LocalDate.now())
+                .active(false)
+                .build());
     }
 
-    public User findUserById(int id){
+    public User findUserById(long id){
         return userRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
     }
@@ -35,7 +42,7 @@ public class UserService {
     }
 
 
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll() {
+        return userRepository.findAll().list();
     }
 }

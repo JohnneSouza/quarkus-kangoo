@@ -1,5 +1,6 @@
 package com.easy.ecomm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -20,10 +22,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @JsonIgnore
     private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
+    @JsonIgnore
     private boolean active;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private LocalDate createdAt;
 }
