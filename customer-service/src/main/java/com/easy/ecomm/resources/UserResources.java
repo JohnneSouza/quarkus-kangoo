@@ -30,6 +30,7 @@ public class UserResources {
     public Iterable<User> findAll(){
         return userService.findAll();
     }
+
     @GET
     @Path("{id}")
     public User findByUserById(@PathParam("id") int id){

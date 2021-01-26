@@ -3,7 +3,10 @@ package com.easy.ecomm.resources;
 import com.easy.ecomm.mock.UserDtoMock;
 import com.easy.ecomm.model.User;
 import com.easy.ecomm.model.dto.UserDto;
+import com.easy.ecomm.testcontainers.PostgreSqlTestContainer;
 import com.easy.ecomm.utils.StringUtils;
+import io.quarkus.test.TestTransaction;
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -21,12 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
+@QuarkusTestResource(PostgreSqlTestContainer.class)
+@TestTransaction
 class UserResourcesTest {
 
     private static final String USERS_PATH = "/users";
     private static final String USER_PATH_BY_EMAIL = USERS_PATH + "/email/";
 
-    @Test
     @DisplayName("Should Create a new User")
     void shouldSuccessfullyCreateUser(){
 
@@ -88,7 +92,7 @@ class UserResourcesTest {
     }
 
     @DisplayName("Check Requests without mandatory fields")
-    @ParameterizedTest(name = "#{index} - Should not Create new User")
+    @ParameterizedTest(name = "#{index} - Should not Create a new User")
     @MethodSource("invalidUserDtoPayloads")
     void testWithExplicitLocalMethodSource(UserDto requestUser) {
         given()
