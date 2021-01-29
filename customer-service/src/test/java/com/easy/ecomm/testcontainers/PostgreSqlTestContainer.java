@@ -10,7 +10,7 @@ import java.util.Map;
 @Slf4j
 public class PostgreSqlTestContainer implements QuarkusTestResourceLifecycleManager {
 
-    public static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:latest");
+    public static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:alpine");
 
     @Override
     public Map<String, String> start() {
