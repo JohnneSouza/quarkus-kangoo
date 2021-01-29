@@ -7,6 +7,7 @@ import com.easy.ecomm.repositories.UserRepository;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,12 +17,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Inject
+    EmailService emailService;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(UserDto userDto, String password){
+    public User createUser(UserDto userDto, String password){
         validateEmail(userDto.getEmail());
+        emailService.sendActivationEmail(userDto.getEmail());
         return userRepository.save(
                 User.builder()
                 .password(BcryptUtil.bcryptHash(password))

@@ -34,9 +34,9 @@ public class UserResources {
     @Operation(summary = "Creates a new User")
     @APIResponse(responseCode = "201", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class, required = true)))
-    public Response saveUser(@Valid UserDto user){
+    public Response register(@Valid UserDto user){
         return Response.status(Response.Status.CREATED)
-                .entity(userService.saveUser(user, user.getPassword())).build();
+                .entity(userService.createUser(user, user.getPassword())).build();
     }
 
     @GET
@@ -52,7 +52,7 @@ public class UserResources {
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class)))
     @Path("{id}")
-    public User findByUserById(@PathParam("id") int id){
+    public User findUserById(@PathParam("id") int id){
         return userService.findUserById(id);
     }
 
