@@ -90,6 +90,25 @@ class UserResourcesTest {
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    @DisplayName("Should Not create a User if Email is already in use")
+    void shouldNotCreateUserWithDuplicatedEmail(){
+
+        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        UserDto duplicatedUser = UserDtoMock.onlyMandatoryFields();
+        duplicatedUser.setEmail(requestUser.getEmail());
+
+        executePost(requestUser);
+
+        given()
+                .body(duplicatedUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(USERS_PATH).prettyPeek()
+                .then()
+                .statusCode(500);
+    }
+
     @DisplayName("Check Requests without mandatory fields")
     @ParameterizedTest(name = "#{index} - Should not Create a new User")
     @MethodSource("invalidUserDtoPayloads")
