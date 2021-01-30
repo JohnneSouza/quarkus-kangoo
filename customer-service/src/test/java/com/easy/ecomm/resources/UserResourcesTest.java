@@ -3,7 +3,9 @@ package com.easy.ecomm.resources;
 import com.easy.ecomm.mock.UserDtoMock;
 import com.easy.ecomm.model.User;
 import com.easy.ecomm.model.dto.UserDto;
+import com.easy.ecomm.testcontainers.PostgreSqlTestContainer;
 import com.easy.ecomm.utils.StringUtils;
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
+@QuarkusTestResource(PostgreSqlTestContainer.class)
 class UserResourcesTest {
 
     private static final String USERS_PATH = "/users";
@@ -87,8 +90,27 @@ class UserResourcesTest {
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    @DisplayName("Should Not create a User if Email is already in use")
+    void shouldNotCreateUserWithDuplicatedEmail(){
+
+        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        UserDto duplicatedUser = UserDtoMock.onlyMandatoryFields();
+        duplicatedUser.setEmail(requestUser.getEmail());
+
+        executePost(requestUser);
+
+        given()
+                .body(duplicatedUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(USERS_PATH).prettyPeek()
+                .then()
+                .statusCode(500);
+    }
+
     @DisplayName("Check Requests without mandatory fields")
-    @ParameterizedTest(name = "#{index} - Should not Create new User")
+    @ParameterizedTest(name = "#{index} - Should not Create a new User")
     @MethodSource("invalidUserDtoPayloads")
     void testWithExplicitLocalMethodSource(UserDto requestUser) {
         given()
