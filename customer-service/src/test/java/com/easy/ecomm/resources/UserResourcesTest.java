@@ -14,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.ws.rs.core.Response;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -28,6 +29,7 @@ class UserResourcesTest {
 
     private static final String USERS_PATH = "/users";
     private static final String USER_PATH_BY_EMAIL = USERS_PATH + "/email/";
+    private static final String USER_ACTIVATION_PATH = USERS_PATH + "/activate/";
 
     @Test
     @DisplayName("Should Create a new User")
@@ -56,7 +58,7 @@ class UserResourcesTest {
 
     @Test
     @DisplayName("Should Find a User by Email")
-    void shouldSuccessFindUserByEmail(){
+    void shouldSuccessfullyFindUserByEmail(){
 
         UserDto requestUser = UserDtoMock.onlyMandatoryFields();
 
@@ -120,6 +122,90 @@ class UserResourcesTest {
                 .post(USERS_PATH).prettyPeek()
                 .then()
                 .statusCode(400);
+    }
+
+    @Test
+    @DisplayName("Should Activate a new User Account")
+    void shouldSuccessfullyActivateUserAccount(){
+
+        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+
+        User newUser = given()
+                .body(requestUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(USERS_PATH).prettyPeek()
+                .then()
+                .extract().response()
+                .getBody().as(User.class);
+
+        String activationKey = newUser.getActivationKey();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(USER_ACTIVATION_PATH + activationKey).prettyPeek()
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+
+        User activatedUser = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(USERS_PATH + "/" + newUser.getId()).prettyPeek()
+                .then()
+                .extract().response()
+                .getBody().as(User.class);
+
+        assertTrue(activatedUser.isActive());
+        assertNull(activatedUser.getActivationKey());
+    }
+
+    @Test
+    @DisplayName("Should not Activate an active User Account")
+    void shouldNotActivateUserAccountAlreadyActive(){
+
+        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+
+        User newUser = given()
+                .body(requestUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(USERS_PATH).prettyPeek()
+                .then()
+                .extract().response()
+                .getBody().as(User.class);
+
+        String activationKey = newUser.getActivationKey();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(USER_ACTIVATION_PATH + activationKey).prettyPeek()
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(USER_ACTIVATION_PATH + activationKey).prettyPeek()
+                .then()
+                .statusCode(500);
+    }
+
+    @Test
+    @DisplayName("Should not Activate a new User Account with invalid activationKey")
+    void shouldNotActivateUserAccountWithInvalidKey(){
+
+        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+
+        executePost(requestUser);
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(USER_ACTIVATION_PATH + UUID.randomUUID().toString()).prettyPeek()
+                .then()
+                .statusCode(500);
     }
 
     static Stream<UserDto> invalidUserDtoPayloads(){

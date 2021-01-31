@@ -12,8 +12,9 @@ public class EmailService {
     @Inject
     Mailer mailer;
 
-    public void sendActivationEmail(String email){
-        mailer.send(Mail.withText(email, "Confirm your account on Easy&Com", "Thank you"));
+    public void sendActivationEmail(String email, String activationKey){
+        mailer.send(Mail.withText(email, "Confirm your account on Easy&Com", "Thank you, your key:" +
+                activationKey));
     }
 
 }

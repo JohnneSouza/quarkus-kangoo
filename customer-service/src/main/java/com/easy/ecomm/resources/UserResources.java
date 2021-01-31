@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,6 +38,16 @@ public class UserResources {
     public Response register(@Valid UserDto user){
         return Response.status(Response.Status.CREATED)
                 .entity(userService.createUser(user, user.getPassword())).build();
+    }
+
+    @PUT
+    @Transactional
+    @Operation(summary = "Creates a new User")
+    @APIResponse(responseCode = "201", content =
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class, required = true)))
+    public Response update(@Valid UserDto user){
+        return Response.status(Response.Status.OK)
+                .entity(userService.updateUser(user, user.getPassword())).build();
     }
 
     @GET
@@ -63,6 +74,16 @@ public class UserResources {
     @Path("email/{email}")
     public User findUserByEmail(@PathParam("email") String email){
         return userService.finderByEmail(email);
+    }
+
+    @GET
+    @Transactional
+    @Operation(summary = "Activate a User Account")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON))
+    @Path("activate/{key}")
+    public Response activateUserAccount(@PathParam("key") String key){
+        userService.activateUser(key);
+        return Response.status(Response.Status.OK).build();
     }
 
 }

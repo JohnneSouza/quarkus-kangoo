@@ -23,5 +23,7 @@ public class UserRepository implements PanacheRepository<User> {
     }
 
 
-
+    public Optional<User> findActivationKey(String key) {
+        return find("activationKey", key).firstResultOptional();
+    }
 }

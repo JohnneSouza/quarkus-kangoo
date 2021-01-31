@@ -1,6 +1,8 @@
 package com.easy.ecomm.service;
 
 import com.easy.ecomm.exceptions.EmailTakenException;
+import com.easy.ecomm.exceptions.InvalidActivationKeyException;
+import com.easy.ecomm.exceptions.UserAccountAlreadyActiveException;
 import com.easy.ecomm.model.User;
 import com.easy.ecomm.model.dto.UserDto;
 import com.easy.ecomm.repositories.UserRepository;
@@ -11,6 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserService {
@@ -25,8 +28,9 @@ public class UserService {
     }
 
     public User createUser(UserDto userDto, String password){
+        String activationKey = UUID.randomUUID().toString();
         validateEmail(userDto.getEmail());
-        emailService.sendActivationEmail(userDto.getEmail());
+        emailService.sendActivationEmail(userDto.getEmail(), activationKey);
         return userRepository.save(
                 User.builder()
                 .password(BcryptUtil.bcryptHash(password))
@@ -34,8 +38,13 @@ public class UserService {
                 .lastName(userDto.getLastName())
                 .email(userDto.getEmail())
                 .createdAt(LocalDate.now())
+                .activationKey(activationKey)
                 .active(false)
                 .build());
+    }
+
+    public Object updateUser(UserDto user, String password) {
+        return null;
     }
 
     public User findUserById(long id){
@@ -50,6 +59,19 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll().list();
+    }
+
+    public User activateUser(String key) {
+        User user = userRepository.findActivationKey(key)
+                .orElseThrow(() -> new InvalidActivationKeyException("Invalid activation key"));
+        if (!user.isActive()){
+            user.setActive(true);
+            user.setActivationKey(null);
+            userRepository.persist(user);
+            return user;
+        } else {
+            throw new UserAccountAlreadyActiveException("Account is already active");
+        }
     }
 
     private void validateEmail(String email) {
