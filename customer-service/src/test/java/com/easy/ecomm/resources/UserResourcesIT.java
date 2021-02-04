@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 @QuarkusTestResource(PostgreSqlTestContainer.class)
-class UserResourcesTest {
+class UserResourcesIT {
 
     private static final String USERS_PATH = "/users";
     private static final String USER_PATH_BY_EMAIL = USERS_PATH + "/email/";
@@ -206,6 +206,40 @@ class UserResourcesTest {
                 .get(USER_ACTIVATION_PATH + UUID.randomUUID().toString()).prettyPeek()
                 .then()
                 .statusCode(500);
+    }
+
+    @Test
+    @DisplayName("Should Update the User's account info")
+    void shouldSuccessfullyUpdateUser(){
+
+        UserDto newUser = UserDtoMock.onlyMandatoryFields();
+
+        User createUser = given()
+                .body(newUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(USERS_PATH).prettyPeek()
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().response()
+                .getBody().as(User.class);
+
+        newUser.setLastName("updated");
+        newUser.setFirstName("updated");
+
+        User updatedUser = given()
+                .body(newUser)
+                .contentType(ContentType.JSON)
+                .when()
+                .put(USERS_PATH + "/" + createUser.getId()).prettyPeek()
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().response()
+                .getBody().as(User.class);
+
+        assertEquals("updated", updatedUser.getFirstName());
+        assertEquals("updated", updatedUser.getLastName());
+
     }
 
     static Stream<UserDto> invalidUserDtoPayloads(){

@@ -43,8 +43,12 @@ public class UserService {
                 .build());
     }
 
-    public Object updateUser(UserDto user, String password) {
-        return null;
+    public User updateUser(UserDto newUser, long id, String password) {
+        User currentUser = findUserById(id);
+        currentUser.setLastName(newUser.getLastName());
+        currentUser.setFirstName(newUser.getFirstName());
+        userRepository.persist(currentUser);
+        return currentUser;
     }
 
     public User findUserById(long id){
@@ -61,14 +65,13 @@ public class UserService {
         return userRepository.findAll().list();
     }
 
-    public User activateUser(String key) {
+    public void activateUser(String key) {
         User user = userRepository.findActivationKey(key)
                 .orElseThrow(() -> new InvalidActivationKeyException("Invalid activation key"));
         if (!user.isActive()){
             user.setActive(true);
             user.setActivationKey(null);
             userRepository.persist(user);
-            return user;
         } else {
             throw new UserAccountAlreadyActiveException("Account is already active");
         }

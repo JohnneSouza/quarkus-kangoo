@@ -42,12 +42,13 @@ public class UserResources {
 
     @PUT
     @Transactional
-    @Operation(summary = "Creates a new User")
-    @APIResponse(responseCode = "201", content =
+    @Operation(summary = "Updates the user info")
+    @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class, required = true)))
-    public Response update(@Valid UserDto user){
+    @Path("{id}")
+    public Response update(@Valid UserDto user, @PathParam("id") Long id){
         return Response.status(Response.Status.OK)
-                .entity(userService.updateUser(user, user.getPassword())).build();
+                .entity(userService.updateUser(user, id, user.getPassword())).build();
     }
 
     @GET
