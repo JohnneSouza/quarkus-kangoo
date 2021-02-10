@@ -19,11 +19,6 @@ public class MongoContainer implements QuarkusTestResourceLifecycleManager {
     @Override
     public Map<String, String> start() {
         mongoDBContainer.start();
-        mongoDBContainer.execInContainer("db.easy-sales-quarkus.save(){\n" +
-                "    \"_id\" : \"dac7bd2c-2cd0-453a-ac8c-6c299f57dec8\",\n" +
-                "    \"description\": \"description\",\n" +
-                "    \"category\" : \"books\"\n" +
-                "});");
         return Collections.singletonMap("quarkus.mongodb.connection-string", mongoDBContainer.getReplicaSetUrl());
     }
 

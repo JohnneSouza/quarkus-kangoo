@@ -1,13 +1,19 @@
 package com.easy.ecomm.resources;
 
 import com.easy.ecomm.model.Product;
+import com.easy.ecomm.model.ProductDto;
 import com.easy.ecomm.service.ProductService;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.stream.Stream;
+import java.util.List;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
@@ -18,7 +24,7 @@ public class ProductResource {
     ProductService productService;
 
     @POST
-    public Response saveProduct(Product product) {
+    public Response saveProduct(ProductDto product) {
         return Response.status(Response.Status.CREATED).entity(productService.save(product)).build();
     }
 
@@ -29,14 +35,8 @@ public class ProductResource {
     }
 
     @GET
-    public Stream<Product> findAll(@QueryParam("category") String category){
-        return productService.findAll(category);
-    }
-
-    @PUT
-    @Path("{id}")
-    public String updateProduct(@PathParam("id") String id, Product product){
-        return productService.updateProduct(id, product);
+    public List<Product> findAll(){
+        return productService.findAll();
     }
 
 }
