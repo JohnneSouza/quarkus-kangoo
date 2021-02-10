@@ -3,6 +3,7 @@ package com.easy.ecomm.resources;
 import com.easy.ecomm.model.Product;
 import com.easy.ecomm.model.ProductDto;
 import com.easy.ecomm.service.ProductService;
+import org.bson.types.ObjectId;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -31,7 +32,7 @@ public class ProductResource {
     @GET
     @Path("{id}")
     public Product findById(@PathParam("id") String id){
-        return productService.findById(id);
+        return productService.findById(new ObjectId(id));
     }
 
     @GET
