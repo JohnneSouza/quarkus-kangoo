@@ -21,11 +21,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @JsonIgnore
     private String password;
-    @JsonIgnore
+
     private boolean active;
+
+    private String activationKey;
 
     private String firstName;
 

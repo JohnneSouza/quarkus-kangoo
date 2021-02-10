@@ -10,7 +10,7 @@
     <name>Easy-Ecomm Parent</name>
 
     <modules>
-        <module>customer-service</module>
+        <module>users-service</module>
         <module>products-service</module>
         <module>sales-service</module>
     </modules>
