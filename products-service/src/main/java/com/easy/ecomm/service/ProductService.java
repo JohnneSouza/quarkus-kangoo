@@ -38,4 +38,15 @@ public class ProductService {
         return productRepository.findAll().list();
     }
 
+    public Product update(ObjectId id, ProductDto productDto) {
+        Product product = findById(id);
+        product.setUpdatedDate(LocalDate.now());
+        product.setPriceCost(productDto.getPriceCost());
+        product.setPriceSell(productDto.getPriceSell());
+        product.setColor(productDto.getColor());
+        product.setDescription(productDto.getDescription());
+        product.setCategory(productDto.getCategory());
+        productRepository.update(product);
+        return product;
+    }
 }
