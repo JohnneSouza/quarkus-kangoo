@@ -49,4 +49,11 @@ public class ProductService {
         productRepository.update(product);
         return product;
     }
+
+    public Product changeActiveStatus(ObjectId id){
+        Product product = findById(id);
+        product.setActive(!product.isActive());
+        productRepository.update(product);
+        return product;
+    }
 }

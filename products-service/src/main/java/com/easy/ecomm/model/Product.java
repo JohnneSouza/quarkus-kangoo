@@ -23,5 +23,6 @@ public class Product {
     private double priceSell;
     private double priceCost;
     private int stockAmount;
+    private boolean active;
 
 }

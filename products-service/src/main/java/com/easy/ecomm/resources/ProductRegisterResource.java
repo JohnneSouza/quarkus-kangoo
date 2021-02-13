@@ -20,7 +20,7 @@ import java.util.List;
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ProductResource {
+public class ProductRegisterResource {
 
     @Inject
     ProductService productService;
@@ -45,6 +45,12 @@ public class ProductResource {
     @Path("{id}")
     public Response updateProduct(@PathParam("id") String id, ProductDto product) {
         return Response.status(Response.Status.OK).entity(productService.update(new ObjectId(id), product)).build();
+    }
+
+    @POST
+    @Path("{id}")
+    public Response changeActiveStatus(@PathParam("id") String id) {
+        return Response.status(Response.Status.OK).entity(productService.changeActiveStatus(new ObjectId(id))).build();
     }
 
 }

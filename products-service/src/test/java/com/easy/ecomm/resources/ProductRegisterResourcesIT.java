@@ -3,13 +3,16 @@ package com.easy.ecomm.resources;
 import com.easy.ecomm.mock.ProductDtoMock;
 import com.easy.ecomm.model.Product;
 import com.easy.ecomm.model.ProductDto;
+import com.easy.ecomm.repositories.ProductRepository;
 import com.easy.ecomm.testcontainer.MongoContainer;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
@@ -17,9 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 @QuarkusTestResource(MongoContainer.class)
-class ProductResourcesIT {
+class ProductRegisterResourcesIT {
 
     private static final String PRODUCTS_PATH = "/products/";
+
+    @Inject
+    ProductRepository productRepository;
+
+
+    @BeforeEach
+    public void setup(){
+        productRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("Should Create a new Product")
