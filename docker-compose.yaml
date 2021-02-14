@@ -10,8 +10,10 @@ services:
     image: "postgres:alpine"
     ports:
       - "5432:5432"
-    volumes:
-      - ./db-init/initialize-databases.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: "postgres_ecom"
+      POSTGRES_PASSWORD: "postgres_ecom"
+      POSTGRES_DB: "postgres_ecom"
     network_mode: host
 
   mongoDB:

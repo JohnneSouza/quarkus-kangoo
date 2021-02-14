@@ -7,18 +7,18 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.fast-jar -t easy/ecomm/customer-service-fast-jar .
+# docker build -f src/main/docker/Dockerfile.fast-jar -t easy/ecomm/cart-service-fast-jar .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8070:8070 easy/ecomm/customer-service-fast-jar
+# docker run -i --rm -p 8040:8040 easy/ecomm/cart-service-fast-jar
 #
 # If you want to include the debug port into your docker image
 # you will have to expose the debug port (default 5005) like this :  EXPOSE 8080 5050
 #
 # Then run the container using :
 #
-# docker run -i --rm -p 8070:8070 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" easy/ecomm/customer-service-fast-jar
+# docker run -i --rm -p 8040:8040 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" easy/ecomm/cart-service-fast-jar
 #
 ###
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3 
@@ -48,7 +48,7 @@ COPY --chown=1001 target/quarkus-app/*.jar /deployments/
 COPY --chown=1001 target/quarkus-app/app/ /deployments/app/
 COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
 
-EXPOSE 8070
+EXPOSE 8040
 USER 1001
 
 ENTRYPOINT [ "/deployments/run-java.sh" ]
