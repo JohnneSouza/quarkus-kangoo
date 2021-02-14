@@ -6,6 +6,7 @@ import com.easy.ecomm.service.ProductService;
 import org.bson.types.ObjectId;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,7 +27,7 @@ public class ProductRegisterResource {
     ProductService productService;
 
     @POST
-    public Response saveProduct(ProductDto product) {
+    public Response saveProduct(@Valid ProductDto product) {
         return Response.status(Response.Status.CREATED).entity(productService.save(product)).build();
     }
 
@@ -51,6 +52,12 @@ public class ProductRegisterResource {
     @Path("{id}")
     public Response changeActiveStatus(@PathParam("id") String id) {
         return Response.status(Response.Status.OK).entity(productService.changeActiveStatus(new ObjectId(id))).build();
+    }
+
+    @POST
+    @Path("/list/id")
+    public List<Product> findProductsByIdList(List<String> listId){
+        return productService.findByIdList(listId);
     }
 
 }

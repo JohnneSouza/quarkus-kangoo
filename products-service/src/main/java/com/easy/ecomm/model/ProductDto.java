@@ -14,10 +14,10 @@ public class ProductDto {
     private String description;
     @NotBlank(message = "category must be filled")
     private String category;
-    private String color;
-    private Double priceCost;
+    private String color = "";
+    private Double priceCost = 0.0;
     @NotNull(message = "sellPrice must be informed")
     private Double priceSell;
-    private int stockAmount;
+    private int stockAmount = 0;
 
 }
