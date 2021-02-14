@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -19,13 +20,14 @@ public class ProductService {
 
     public Product save(ProductDto productDto){
         Product product = new Product();
+        product.setActive(true);
         product.setCreatedDate(LocalDate.now());
         product.setDescription(productDto.getDescription());
         product.setCategory(productDto.getCategory());
         product.setColor(productDto.getColor());
         product.setPriceCost(productDto.getPriceCost());
-        product.setPriceSell(productDto.getPriceSell());
         product.setStockAmount(productDto.getStockAmount());
+        product.setPriceSell(productDto.getPriceSell());
         return productRepository.save(product);
     }
 
@@ -55,5 +57,14 @@ public class ProductService {
         product.setActive(!product.isActive());
         productRepository.update(product);
         return product;
+    }
+
+    public List<Product> findByIdList(List<String> listId) {
+        if (listId.isEmpty()){
+            throw new NotFoundException("The product list is empty");
+        }
+        List<ObjectId> productsId = new ArrayList<>();
+        listId.forEach(id -> productsId.add(new ObjectId(id)));
+        return productRepository.findByIdList(productsId);
     }
 }

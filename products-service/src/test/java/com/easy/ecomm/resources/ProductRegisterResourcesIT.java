@@ -8,12 +8,15 @@ import com.easy.ecomm.testcontainer.MongoContainer;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ProductRegisterResourcesIT {
 
     private static final String PRODUCTS_PATH = "/products/";
+    private static final String PRODUCTS_PATH_BY_ID_LIST = "/products/list/id";
 
     @Inject
     ProductRepository productRepository;
@@ -104,11 +108,43 @@ class ProductRegisterResourcesIT {
 
     }
 
-    private void executeProductPost(ProductDto product) {
-        given().body(product)
+    @Test
+    @DisplayName("Should find Products by Id List")
+    void shouldSuccessfullyFindProductsByIdList(){
+
+        // Create 3 Random Products
+        executeProductPost(ProductDtoMock.allFields());
+        executeProductPost(ProductDtoMock.allFields());
+        executeProductPost(ProductDtoMock.allFields());
+
+        // Create 2 Traceable Products
+        List<Product> productList = new ArrayList<>();
+        productList.add(executeProductPost(ProductDtoMock.allFields()));
+        productList.add(executeProductPost(ProductDtoMock.allFields()));
+
+        // Get the Products id;
+        List<String> productIdList = new ArrayList<>();
+        productList.forEach(product -> productIdList.add(product.getId().toString()));
+
+        Product[] foundProducts = given().body(productIdList)
                 .contentType(ContentType.JSON)
                 .when()
-                .post(PRODUCTS_PATH);
+                .post(PRODUCTS_PATH_BY_ID_LIST).prettyPeek()
+                .then()
+                .statusCode(200)
+                .extract()
+                .response().getBody().as(Product[].class);
+
+        assertEquals(productIdList.size(), foundProducts.length);
+    }
+
+    private Product executeProductPost(ProductDto product) {
+        return given().body(product)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(PRODUCTS_PATH)
+                .thenReturn()
+                .body().as(Product.class);
     }
 
 }
