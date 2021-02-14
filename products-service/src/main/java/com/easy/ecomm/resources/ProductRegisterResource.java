@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -32,12 +33,7 @@ public class ProductRegisterResource {
     }
 
     @GET
-    @Path("{id}")
-    public Product findById(@PathParam("id") String id){
-        return productService.findById(new ObjectId(id));
-    }
-
-    @GET
+    @Path("/list")
     public List<Product> findAll(){
         return productService.findAll();
     }
@@ -48,16 +44,9 @@ public class ProductRegisterResource {
         return Response.status(Response.Status.OK).entity(productService.update(new ObjectId(id), product)).build();
     }
 
-    @POST
-    @Path("{id}")
-    public Response changeActiveStatus(@PathParam("id") String id) {
-        return Response.status(Response.Status.OK).entity(productService.changeActiveStatus(new ObjectId(id))).build();
-    }
-
-    @POST
-    @Path("/list/id")
-    public List<Product> findProductsByIdList(List<String> listId){
-        return productService.findByIdList(listId);
+    @GET
+    public List<Product> findById(@QueryParam("idList") List<String> idList){
+        return productService.findByIdList(idList);
     }
 
 }

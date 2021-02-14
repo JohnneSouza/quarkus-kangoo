@@ -2,7 +2,6 @@ package com.easy.ecomm.repositories;
 
 import com.easy.ecomm.model.Product;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import javax.enterprise.context.ApplicationScoped;
