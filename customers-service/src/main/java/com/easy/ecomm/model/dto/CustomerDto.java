@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class CustomerDto {
 
     @NotBlank(message = "password must be filled")
     private String password;

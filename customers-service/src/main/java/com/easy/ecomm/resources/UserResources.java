@@ -1,7 +1,7 @@
 package com.easy.ecomm.resources;
 
-import com.easy.ecomm.model.User;
-import com.easy.ecomm.model.dto.UserDto;
+import com.easy.ecomm.model.Customer;
+import com.easy.ecomm.model.dto.CustomerDto;
 import com.easy.ecomm.service.UserService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -34,8 +34,8 @@ public class UserResources {
     @Transactional
     @Operation(summary = "Creates a new User")
     @APIResponse(responseCode = "201", content =
-    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class, required = true)))
-    public Response register(@Valid UserDto user){
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
+    public Response register(@Valid CustomerDto user){
         return Response.status(Response.Status.CREATED)
                 .entity(userService.createUser(user, user.getPassword())).build();
     }
@@ -44,9 +44,9 @@ public class UserResources {
     @Transactional
     @Operation(summary = "Updates the user info")
     @APIResponse(responseCode = "200", content =
-    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class, required = true)))
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
     @Path("{id}")
-    public Response update(@Valid UserDto user, @PathParam("id") Long id){
+    public Response update(@Valid CustomerDto user, @PathParam("id") Long id){
         return Response.status(Response.Status.OK)
                 .entity(userService.updateUser(user, id, user.getPassword())).build();
     }
@@ -54,26 +54,26 @@ public class UserResources {
     @GET
     @Operation(summary = "Retrieve all Users")
     @APIResponse(responseCode = "200", content =
-    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class)))
-    public Iterable<User> findAll(){
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
+    public Iterable<Customer> findAll(){
         return userService.findAll();
     }
 
     @GET
     @Operation(summary = "Retrieve a User by its id")
     @APIResponse(responseCode = "200", content =
-    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class)))
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("{id}")
-    public User findUserById(@PathParam("id") int id){
+    public Customer findUserById(@PathParam("id") int id){
         return userService.findUserById(id);
     }
 
     @GET
     @Operation(summary = "Retrieve a user by its email")
     @APIResponse(responseCode = "200", content =
-    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = UserDto.class)))
+    @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("email/{email}")
-    public User findUserByEmail(@PathParam("email") String email){
+    public Customer findUserByEmail(@PathParam("email") String email){
         return userService.finderByEmail(email);
     }
 

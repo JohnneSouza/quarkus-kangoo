@@ -1,8 +1,8 @@
 package com.easy.ecomm.resources;
 
-import com.easy.ecomm.mock.UserDtoMock;
-import com.easy.ecomm.model.User;
-import com.easy.ecomm.model.dto.UserDto;
+import com.easy.ecomm.mock.CustomerDtoMock;
+import com.easy.ecomm.model.Customer;
+import com.easy.ecomm.model.dto.CustomerDto;
 import com.easy.ecomm.testcontainers.PostgreSqlTestContainer;
 import com.easy.ecomm.utils.StringUtils;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 @QuarkusTestResource(PostgreSqlTestContainer.class)
-class UserResourcesIT {
+class CustomerResourcesIT {
 
     private static final String USERS_PATH = "/users";
     private static final String USER_PATH_BY_EMAIL = USERS_PATH + "/email/";
@@ -35,9 +35,9 @@ class UserResourcesIT {
     @DisplayName("Should Create a new User")
     void shouldSuccessfullyCreateUser(){
 
-        UserDto newUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto newUser = CustomerDtoMock.onlyMandatoryFields();
 
-        User responseUser = given()
+        Customer responseCustomer = given()
                 .body(newUser)
                 .contentType(ContentType.JSON)
                 .when()
@@ -45,14 +45,14 @@ class UserResourcesIT {
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        assertFalse(responseUser.isActive());
-        assertNull(responseUser.getPassword());
-        assertTrue(responseUser.getId() > 0);
-        assertEquals(newUser.getEmail(), responseUser.getEmail());;
-        assertEquals(newUser.getFirstName(), responseUser.getFirstName());
-        assertEquals(newUser.getLastName(), responseUser.getLastName());
+        assertFalse(responseCustomer.isActive());
+        assertNull(responseCustomer.getPassword());
+        assertTrue(responseCustomer.getId() > 0);
+        assertEquals(newUser.getEmail(), responseCustomer.getEmail());;
+        assertEquals(newUser.getFirstName(), responseCustomer.getFirstName());
+        assertEquals(newUser.getLastName(), responseCustomer.getLastName());
 
     }
 
@@ -60,27 +60,27 @@ class UserResourcesIT {
     @DisplayName("Should Find a User by Email")
     void shouldSuccessfullyFindUserByEmail(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
 
         executePost(requestUser);
 
-        User responseUser = given()
+        Customer responseCustomer = given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get(USER_PATH_BY_EMAIL + requestUser.getEmail()).prettyPeek()
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        assertEquals(requestUser.getEmail(), responseUser.getEmail());
+        assertEquals(requestUser.getEmail(), responseCustomer.getEmail());
     }
 
     @Test
     @DisplayName("Should Not Find a User by Email")
     void shouldNotFindUserByEmail(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
 
         executePost(requestUser);
 
@@ -96,8 +96,8 @@ class UserResourcesIT {
     @DisplayName("Should Not create a User if Email is already in use")
     void shouldNotCreateUserWithDuplicatedEmail(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
-        UserDto duplicatedUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
+        CustomerDto duplicatedUser = CustomerDtoMock.onlyMandatoryFields();
         duplicatedUser.setEmail(requestUser.getEmail());
 
         executePost(requestUser);
@@ -114,7 +114,7 @@ class UserResourcesIT {
     @DisplayName("Check Requests without mandatory fields")
     @ParameterizedTest(name = "#{index} - Should not Create a new User")
     @MethodSource("invalidUserDtoPayloads")
-    void testWithExplicitLocalMethodSource(UserDto requestUser) {
+    void testWithExplicitLocalMethodSource(CustomerDto requestUser) {
         given()
                 .body(requestUser)
                 .contentType(ContentType.JSON)
@@ -128,18 +128,18 @@ class UserResourcesIT {
     @DisplayName("Should Activate a new User Account")
     void shouldSuccessfullyActivateUserAccount(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
 
-        User newUser = given()
+        Customer newCustomer = given()
                 .body(requestUser)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(USERS_PATH).prettyPeek()
                 .then()
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        String activationKey = newUser.getActivationKey();
+        String activationKey = newCustomer.getActivationKey();
 
         given()
                 .contentType(ContentType.JSON)
@@ -148,34 +148,34 @@ class UserResourcesIT {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode());
 
-        User activatedUser = given()
+        Customer activatedCustomer = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(USERS_PATH + "/" + newUser.getId()).prettyPeek()
+                .get(USERS_PATH + "/" + newCustomer.getId()).prettyPeek()
                 .then()
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        assertTrue(activatedUser.isActive());
-        assertNull(activatedUser.getActivationKey());
+        assertTrue(activatedCustomer.isActive());
+        assertNull(activatedCustomer.getActivationKey());
     }
 
     @Test
     @DisplayName("Should not Activate an active User Account")
     void shouldNotActivateUserAccountAlreadyActive(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
 
-        User newUser = given()
+        Customer newCustomer = given()
                 .body(requestUser)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(USERS_PATH).prettyPeek()
                 .then()
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        String activationKey = newUser.getActivationKey();
+        String activationKey = newCustomer.getActivationKey();
 
         given()
                 .contentType(ContentType.JSON)
@@ -196,7 +196,7 @@ class UserResourcesIT {
     @DisplayName("Should not Activate a new User Account with invalid activationKey")
     void shouldNotActivateUserAccountWithInvalidKey(){
 
-        UserDto requestUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto requestUser = CustomerDtoMock.onlyMandatoryFields();
 
         executePost(requestUser);
 
@@ -212,9 +212,9 @@ class UserResourcesIT {
     @DisplayName("Should Update the User's account info")
     void shouldSuccessfullyUpdateUser(){
 
-        UserDto newUser = UserDtoMock.onlyMandatoryFields();
+        CustomerDto newUser = CustomerDtoMock.onlyMandatoryFields();
 
-        User createUser = given()
+        Customer createCustomer = given()
                 .body(newUser)
                 .contentType(ContentType.JSON)
                 .when()
@@ -222,38 +222,38 @@ class UserResourcesIT {
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
         newUser.setLastName("updated");
         newUser.setFirstName("updated");
 
-        User updatedUser = given()
+        Customer updatedCustomer = given()
                 .body(newUser)
                 .contentType(ContentType.JSON)
                 .when()
-                .put(USERS_PATH + "/" + createUser.getId()).prettyPeek()
+                .put(USERS_PATH + "/" + createCustomer.getId()).prettyPeek()
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract().response()
-                .getBody().as(User.class);
+                .getBody().as(Customer.class);
 
-        assertEquals("updated", updatedUser.getFirstName());
-        assertEquals("updated", updatedUser.getLastName());
+        assertEquals("updated", updatedCustomer.getFirstName());
+        assertEquals("updated", updatedCustomer.getLastName());
 
     }
 
-    static Stream<UserDto> invalidUserDtoPayloads(){
+    static Stream<CustomerDto> invalidUserDtoPayloads(){
 
-        UserDto noPassword = UserDtoMock.withoutPassword();
-        UserDto noFirstName = UserDtoMock.withoutFirstName();
-        UserDto noEmail = UserDtoMock.withoutEmail();
+        CustomerDto noPassword = CustomerDtoMock.withoutPassword();
+        CustomerDto noFirstName = CustomerDtoMock.withoutFirstName();
+        CustomerDto noEmail = CustomerDtoMock.withoutEmail();
 
         return Stream.of(noPassword, noFirstName, noEmail);
     }
 
-    private void executePost(UserDto userDto){
+    private void executePost(CustomerDto customerDto){
         given()
-                .body(userDto)
+                .body(customerDto)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(USERS_PATH).prettyPeek();
