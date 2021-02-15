@@ -5,14 +5,15 @@
 
     <groupId>com.easy.ecomm</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>Easy-Ecomm Parent</name>
+    <name>Easy e-com Parent POM</name>
 
     <modules>
-        <module>users-service</module>
-        <module>products-service</module>
-        <module>sales-service</module>
+        <module>../cart-service</module>
+        <module>../products-service</module>
+        <module>../sales-service</module>
+        <module>../users-service</module>
     </modules>
 
     <properties>
