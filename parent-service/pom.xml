@@ -13,7 +13,7 @@
         <module>../cart-service</module>
         <module>../products-service</module>
         <module>../sales-service</module>
-        <module>../users-service</module>
+        <module>../customers-service</module>
     </modules>
 
     <properties>
