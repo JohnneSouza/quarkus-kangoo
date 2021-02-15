@@ -4,7 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>commons</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mongodb-panache-common</artifactId>
+    </dependency>
+  </dependencies>
   <name>Easy e-com Commons</name>
 
   <parent>
