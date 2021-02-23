@@ -10,10 +10,10 @@
     <name>Easy e-com Parent POM</name>
 
     <modules>
-        <module>../cart-service</module>
-        <module>../products-service</module>
-        <module>../sales-service</module>
-        <module>../customers-service</module>
+        <module>cart-service</module>
+        <module>products-service</module>
+        <module>sales-service</module>
+        <module>customers-service</module>
     </modules>
 
     <properties>
