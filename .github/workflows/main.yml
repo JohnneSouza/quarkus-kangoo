@@ -17,7 +17,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Maven Install
+        run: mvn -f commons/pom.xml -B clean install
       - name: Maven Package
-        run: mvn -f parent-service/pom.xml -B clean package -DskipTests
+        run: mvn -f commons/pom.xml -B clean package
+      - name: Maven Package
+        run: mvn -B clean package -DskipTests
+      - name: Maven Install
+        run: mvn -B clean install
       - name: Maven Verify
-        run: mvn -f parent-service/pom.xml -B clean verify
+        run: mvn -B clean verify
