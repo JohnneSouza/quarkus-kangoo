@@ -1,4 +1,4 @@
-package com.easy.ecomm.exceptions;
+package com.easy.ecomm.core.email;
 
 public class EmailTakenException extends RuntimeException{
 

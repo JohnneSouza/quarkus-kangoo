@@ -1,6 +1,6 @@
 package com.easy.ecomm.mock;
 
-import com.easy.ecomm.model.dto.CustomerDto;
+import com.easy.ecomm.core.customer.CustomerDto;
 import com.easy.ecomm.utils.StringUtils;
 
 public class CustomerDtoMock {

@@ -1,4 +1,4 @@
-package com.easy.ecomm.resources;
+package com.easy.ecomm.rest;
 
 import com.easy.ecomm.model.Product;
 import com.easy.ecomm.model.ProductDto;
@@ -14,7 +14,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -22,10 +21,16 @@ import java.util.List;
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ProductRegisterResource {
+public class ProductResource {
 
     @Inject
     ProductService productService;
+
+    @GET
+    @Path("{id}")
+    public Response findProductById(@PathParam("id") String id){
+        return Response.status(Response.Status.OK).entity(productService.findById(new ObjectId(id))).build();
+    }
 
     @POST
     public Response saveProduct(@Valid ProductDto product) {
@@ -33,7 +38,7 @@ public class ProductRegisterResource {
     }
 
     @GET
-    @Path("/list")
+    @Path("list")
     public List<Product> findAll(){
         return productService.findAll();
     }
@@ -44,8 +49,9 @@ public class ProductRegisterResource {
         return Response.status(Response.Status.OK).entity(productService.update(new ObjectId(id), product)).build();
     }
 
-    @GET
-    public List<Product> findById(@QueryParam("idList") List<String> idList){
+    @POST
+    @Path("list/id")
+    public List<Product> findById(List<String> idList){
         return productService.findByIdList(idList);
     }
 

@@ -1,11 +1,9 @@
-package com.easy.ecomm.service;
+package com.easy.ecomm.core.customer;
 
-import com.easy.ecomm.exceptions.EmailTakenException;
-import com.easy.ecomm.exceptions.InvalidActivationKeyException;
-import com.easy.ecomm.exceptions.UserAccountAlreadyActiveException;
-import com.easy.ecomm.model.Customer;
-import com.easy.ecomm.model.dto.CustomerDto;
-import com.easy.ecomm.repositories.UserRepository;
+import com.easy.ecomm.core.AccountAlreadyActiveException;
+import com.easy.ecomm.core.InvalidActivationKeyException;
+import com.easy.ecomm.core.email.EmailTakenException;
+import com.easy.ecomm.core.email.EmailService;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -73,7 +71,7 @@ public class UserService {
             customer.setActivationKey(null);
             userRepository.persist(customer);
         } else {
-            throw new UserAccountAlreadyActiveException("Account is already active");
+            throw new AccountAlreadyActiveException("Account is already active");
         }
     }
 

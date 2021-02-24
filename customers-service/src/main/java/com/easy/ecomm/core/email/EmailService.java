@@ -1,4 +1,4 @@
-package com.easy.ecomm.service;
+package com.easy.ecomm.core.email;
 
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;

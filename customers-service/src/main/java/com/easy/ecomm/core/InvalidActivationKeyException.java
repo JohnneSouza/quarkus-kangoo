@@ -1,4 +1,4 @@
-package com.easy.ecomm.exceptions;
+package com.easy.ecomm.core;
 
 public class InvalidActivationKeyException extends RuntimeException{
 
