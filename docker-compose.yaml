@@ -23,7 +23,7 @@ services:
     network_mode: host
 
   zookeeper:
-    image: strimzi/kafka:0.11.3-kafka-2.1.0
+    image: strimzi/kafka:0.19.0-kafka-2.5.0
     command: [
         "sh", "-c",
         "bin/zookeeper-server-start.sh config/zookeeper.properties"
@@ -35,7 +35,7 @@ services:
     network_mode: host
 
   kafka:
-    image: strimzi/kafka:0.11.3-kafka-2.1.0
+    image: strimzi/kafka:0.19.0-kafka-2.5.0
     command: [
         "sh", "-c",
         "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
