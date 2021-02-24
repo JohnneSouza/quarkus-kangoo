@@ -1,4 +1,4 @@
-package com.easy.ecomm.model.dto;
+package com.easy.ecomm.core.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

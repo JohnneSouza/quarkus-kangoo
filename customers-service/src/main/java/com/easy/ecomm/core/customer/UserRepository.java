@@ -1,6 +1,6 @@
-package com.easy.ecomm.repositories;
+package com.easy.ecomm.core.customer;
 
-import com.easy.ecomm.model.Customer;
+import com.easy.ecomm.core.customer.Customer;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;

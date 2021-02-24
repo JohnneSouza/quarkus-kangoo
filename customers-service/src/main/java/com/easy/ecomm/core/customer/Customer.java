@@ -1,4 +1,4 @@
-package com.easy.ecomm.model;
+package com.easy.ecomm.core.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

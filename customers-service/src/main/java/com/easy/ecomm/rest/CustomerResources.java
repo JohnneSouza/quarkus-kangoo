@@ -1,8 +1,8 @@
-package com.easy.ecomm.resources;
+package com.easy.ecomm.rest;
 
-import com.easy.ecomm.model.Customer;
-import com.easy.ecomm.model.dto.CustomerDto;
-import com.easy.ecomm.service.UserService;
+import com.easy.ecomm.core.customer.Customer;
+import com.easy.ecomm.core.customer.CustomerDto;
+import com.easy.ecomm.core.customer.UserService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -22,17 +22,17 @@ import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/users")
+@Path("/customers")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-public class UserResources {
+public class CustomerResources {
 
     @Inject
     UserService userService;
 
     @POST
     @Transactional
-    @Operation(summary = "Creates a new User")
+    @Operation(summary = "Creates a new Customer")
     @APIResponse(responseCode = "201", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
     public Response register(@Valid CustomerDto user){
@@ -42,7 +42,7 @@ public class UserResources {
 
     @PUT
     @Transactional
-    @Operation(summary = "Updates the user info")
+    @Operation(summary = "Updates the Customer info")
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
     @Path("{id}")
@@ -52,7 +52,7 @@ public class UserResources {
     }
 
     @GET
-    @Operation(summary = "Retrieve all Users")
+    @Operation(summary = "Retrieve all Custumers")
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     public Iterable<Customer> findAll(){
@@ -60,7 +60,7 @@ public class UserResources {
     }
 
     @GET
-    @Operation(summary = "Retrieve a User by its id")
+    @Operation(summary = "Retrieve a Customer by its id")
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("{id}")
@@ -69,7 +69,7 @@ public class UserResources {
     }
 
     @GET
-    @Operation(summary = "Retrieve a user by its email")
+    @Operation(summary = "Retrieve a Customer by its email")
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("email/{email}")
@@ -79,7 +79,7 @@ public class UserResources {
 
     @GET
     @Transactional
-    @Operation(summary = "Activate a User Account")
+    @Operation(summary = "Activate a Customer Account")
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON))
     @Path("activate/{key}")
     public Response activateUserAccount(@PathParam("key") String key){

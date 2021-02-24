@@ -1,8 +1,8 @@
-package com.easy.ecomm.resources;
+package com.easy.ecomm.rest;
 
 import com.easy.ecomm.mock.CustomerDtoMock;
-import com.easy.ecomm.model.Customer;
-import com.easy.ecomm.model.dto.CustomerDto;
+import com.easy.ecomm.core.customer.Customer;
+import com.easy.ecomm.core.customer.CustomerDto;
 import com.easy.ecomm.testcontainers.PostgreSqlTestContainer;
 import com.easy.ecomm.utils.StringUtils;
 import io.quarkus.test.common.QuarkusTestResource;
