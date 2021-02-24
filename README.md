@@ -1,3 +1,5 @@
+[![Main Branch](https://github.com/JohnneSouza/quarkus-easy-ecom/actions/workflows/main.yml/badge.svg)](https://github.com/JohnneSouza/quarkus-easy-ecom/actions/workflows/main.yml)
+
 # Easy Ecommerce API project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
