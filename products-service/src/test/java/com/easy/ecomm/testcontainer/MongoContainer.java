@@ -1,11 +1,14 @@
 package com.easy.ecomm.testcontainer;
 
+import com.easy.ecomm.repositories.ProductRepository;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import io.quarkus.test.junit.QuarkusTest;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.MongoDBContainer;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
 
@@ -14,6 +17,9 @@ import java.util.Map;
 public class MongoContainer implements QuarkusTestResourceLifecycleManager {
 
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+
+    @Inject
+    ProductRepository productRepository;
 
     @SneakyThrows
     @Override
@@ -25,6 +31,12 @@ public class MongoContainer implements QuarkusTestResourceLifecycleManager {
     @Override
     public void stop() {
         mongoDBContainer.close();
+    }
+
+
+    @BeforeEach
+    public void setup(){
+        productRepository.deleteAll();
     }
 
 }
