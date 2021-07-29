@@ -1,6 +1,5 @@
 package dev.kangoo.core.product;
 
-import dev.kangoo.core.product.Product;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.bson.types.ObjectId;
 

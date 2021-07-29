@@ -1,8 +1,5 @@
 package dev.kangoo.core.product;
 
-import dev.kangoo.core.product.Product;
-import dev.kangoo.core.product.ProductDto;
-import dev.kangoo.core.product.ProductRepository;
 import org.bson.types.ObjectId;
 
 import javax.enterprise.context.ApplicationScoped;
