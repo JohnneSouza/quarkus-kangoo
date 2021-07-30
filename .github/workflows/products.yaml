@@ -3,6 +3,9 @@ name: Products Workflow
 on:
   push:
     branches: [ main ]
+    paths:
+      - /product/*
+      - /product/pom.xml
   pull_request:
     branches: [ main ]
 
