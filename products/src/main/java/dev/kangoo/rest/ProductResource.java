@@ -32,7 +32,6 @@ public class ProductResource {
     }
 
     @GET
-    @Path("list")
     public List<Product> findAll(){
         return productService.findAll();
     }
