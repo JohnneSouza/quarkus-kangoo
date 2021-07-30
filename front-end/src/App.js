@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 
 function App() {
@@ -7,8 +7,10 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Welcome to Easy & Com
+          Welcome to <a href="https://kangoo.dev">Kangoo</a>
         </p>
+        <h5>We are still under Development</h5>
+        <a href="mailto: contact@kangoo.dev">contact us</a>
       </header>
     </div>
   );
