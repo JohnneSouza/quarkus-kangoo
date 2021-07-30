@@ -1,6 +1,6 @@
-[![Main Branch](https://github.com/JohnneSouza/quarkus-easy-ecom/actions/workflows/main.yml/badge.svg)](https://github.com/JohnneSouza/quarkus-easy-ecom/actions/workflows/main.yml)
+# Kangoo e-commerce API project
 
-# Easy Ecommerce API project
+https://kangoo.dev
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
