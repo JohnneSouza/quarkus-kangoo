@@ -1,5 +1,5 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=JohnneSouza_quarkus-easy-ecom&metric=alert_status)](https://sonarcloud.io/dashboard?id=JohnneSouza_quarkus-easy-ecom)
-# customer-service project
+# customers project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
