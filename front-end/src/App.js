@@ -10,7 +10,7 @@ function App() {
           Welcome to <a href="https://kangoo.dev">Kangoo</a>
         </p>
         <h5>We are still under Development</h5>
-        <a href="mailto: contact@kangoo.dev">contact us</a>
+        <a href="mailto: support@kangoo.dev">contact us</a>
       </header>
     </div>
   );
