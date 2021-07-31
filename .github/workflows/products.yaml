@@ -1,4 +1,4 @@
-name: Products Workflow
+name: Products Tests Workflow
 
 on:
   push:
