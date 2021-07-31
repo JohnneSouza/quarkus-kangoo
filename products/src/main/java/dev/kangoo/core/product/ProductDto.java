@@ -3,6 +3,7 @@ package dev.kangoo.core.product;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +19,7 @@ public class ProductDto {
     private Double priceCost = 0.0;
     @NotNull(message = "sellPrice must be informed")
     private Double priceSell;
-    private int stockAmount = 0;
+    @Min(0)
+    private int stockQuantity = 0;
 
 }
