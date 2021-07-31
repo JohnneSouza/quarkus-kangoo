@@ -20,7 +20,7 @@ public final class ProductDtoMock {
         product.setColor("Blue");
         product.setPriceSell(Math.random() * 42);
         product.setPriceCost(Math.random() * 42);
-        product.setStockAmount(42);
+        product.setStockQuantity(42);
 
         return product;
     }

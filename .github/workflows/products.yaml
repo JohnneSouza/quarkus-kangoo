@@ -1,18 +1,18 @@
-name: Products Tests Workflow
+name: Products Workflow
 
 on:
   push:
     branches: [ main ]
     paths:
-      - .github/workflows/products.yml
-      - /product/*
-      - /product/pom.xml
+      - .github/workflows/products.yaml
+      - /products/*
+      - /products/pom.xml
   pull_request:
     branches: [ main ]
     paths:
-      - .github/workflows/products.yml
-      - /product/*
-      - /product/pom.xml
+      - .github/workflows/products.yaml
+      - /products/*
+      - /products/pom.xml
 
 jobs:
   build:
@@ -31,4 +31,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Run Unit Tests
-        run: mvn -f products/pom.xml
+        run: mvn -f products/pom.xml test
+      - name: Run Integration Tests
+        run: mvn -f products/pom.xml verify
