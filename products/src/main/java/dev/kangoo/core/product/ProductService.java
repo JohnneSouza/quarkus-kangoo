@@ -1,7 +1,6 @@
 package dev.kangoo.core.product;
 
 import org.bson.types.ObjectId;
-import org.modelmapper.ModelMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,13 +15,16 @@ public class ProductService {
     @Inject
     ProductRepository productRepository;
 
-    ModelMapper modelMapper = new ModelMapper();
-
     public Product save(ProductDto productDto){
-        Product product = this.modelMapper.map(productDto, Product.class);
+        Product product = new Product();
         product.setActive(true);
         product.setCreatedDate(LocalDate.now());
-
+        product.setDescription(productDto.getDescription());
+        product.setCategory(productDto.getCategory());
+        product.setColor(productDto.getColor());
+        product.setPriceCost(productDto.getPriceCost());
+        product.setStockAmount(productDto.getStockQuantity());
+        product.setPriceSell(productDto.getPriceSell());
         return productRepository.save(product);
     }
 
@@ -37,8 +39,12 @@ public class ProductService {
 
     public Product update(ObjectId id, ProductDto productDto) {
         Product product = findById(id);
-        modelMapper.map(productDto, product);
         product.setUpdatedDate(LocalDate.now());
+        product.setPriceCost(productDto.getPriceCost());
+        product.setPriceSell(productDto.getPriceSell());
+        product.setColor(productDto.getColor());
+        product.setDescription(productDto.getDescription());
+        product.setCategory(productDto.getCategory());
         productRepository.update(product);
         return product;
     }
