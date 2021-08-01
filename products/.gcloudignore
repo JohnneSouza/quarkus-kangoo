@@ -14,4 +14,13 @@
 .gitignore
 
 # Target directory for maven builds
-target/
+/target/classes
+/target/generated-sources
+/target/generated-test-sources
+/target/maven-archiver
+/target/maven-status
+/target/*source
+/target/quarkus
+/target/quarkus-app
+/target/test-classes
+/target/*.jar
