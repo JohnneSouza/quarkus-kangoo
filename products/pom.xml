@@ -177,7 +177,7 @@
       <id>dev</id>
     </profile>
     <profile>
-      <id>sit</id>
+      <id>prod</id>
     </profile>
   </profiles>
 
