@@ -3,6 +3,9 @@ package dev.kangoo.rest;
 import dev.kangoo.core.product.Product;
 import dev.kangoo.core.product.ProductDto;
 import dev.kangoo.core.product.ProductService;
+import dev.kangoo.core.support.PageRequest;
+import dev.kangoo.core.support.PageResponse;
+import io.quarkus.panache.common.Page;
 import org.bson.types.ObjectId;
 
 import javax.inject.Inject;
@@ -32,8 +35,8 @@ public class ProductResource {
     }
 
     @GET
-    public List<Product> findAll(){
-        return productService.findAll();
+    public PageResponse<Product> findAll(@BeanParam PageRequest pageRequest){
+        return productService.findAll(pageRequest);
     }
 
     @PUT
