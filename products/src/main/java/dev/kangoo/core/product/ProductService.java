@@ -1,5 +1,7 @@
 package dev.kangoo.core.product;
 
+import dev.kangoo.core.support.PageRequest;
+import dev.kangoo.core.support.PageResponse;
 import org.bson.types.ObjectId;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,8 +35,8 @@ public class ProductService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public List<Product> findAll(){
-        return productRepository.findAll().list();
+    public PageResponse<Product> findAll(PageRequest pageRequest){
+        return productRepository.findAll(pageRequest);
     }
 
     public Product update(ObjectId id, ProductDto productDto) {
