@@ -6,10 +6,8 @@ COPY .mvn /project/.mvn
 USER quarkus
 WORKDIR /project
 RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
-COPY src /project/src
-RUN ./mvnw package -DskipTests
-COPY target/*-runner /project/target/
 RUN ./mvnw package -Pnative
+COPY target/*-runner /project/target/
 
 ## Stage 2 : create the docker final image
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4
