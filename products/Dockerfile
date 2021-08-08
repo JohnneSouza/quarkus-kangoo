@@ -1,6 +1,5 @@
 ## Stage 1 : build with maven builder image with native capabilities
 FROM quay.io/quarkus/ubi-quarkus-native-image:21.1.0-java11 AS build
-RUN mvn -N io.takari:maven:0.7.7:wrapper
 COPY pom.xml /project/
 COPY mvnw /project/mvnw
 COPY .mvn /project/.mvn
