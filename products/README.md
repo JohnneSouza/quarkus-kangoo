@@ -1,4 +1,6 @@
-# products-service project
+# Products project
+
+https://products.kangoo.dev/products
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
