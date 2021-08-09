@@ -1,4 +1,4 @@
-package dev.kangoo.testcontainer;
+package dev.kangoo.testcontainers;
 
 import dev.kangoo.core.product.ProductRepository;
 import io.quarkus.test.common.QuarkusTestResource;
