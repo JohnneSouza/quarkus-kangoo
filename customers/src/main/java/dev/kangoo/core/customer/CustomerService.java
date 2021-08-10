@@ -81,4 +81,8 @@ public class CustomerService {
             throw new EmailTakenException("This email is already registered");
         }
     }
+
+    public boolean deleteUserById(long id) {
+        return this.customerRepository.deleteById(id);
+    }
 }

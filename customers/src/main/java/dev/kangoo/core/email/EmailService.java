@@ -13,8 +13,11 @@ public class EmailService {
     Mailer mailer;
 
     public void sendActivationEmail(String email, String activationKey){
-        mailer.send(Mail.withText(email, "Confirm your account on Kangoo", "Thank you, your key:" +
-                activationKey));
+        mailer.send(Mail.withText(email, "Confirm your account on Kangoo",
+                "Thank you! \n " +
+                        "Your activation key: " + activationKey + "\n" +
+                        "Or you can use the link below \n" +
+                        "https://customers.kagoo.dev/customers/activation/" + activationKey));
     }
 
 }
