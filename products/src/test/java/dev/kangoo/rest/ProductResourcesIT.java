@@ -3,7 +3,7 @@ package dev.kangoo.rest;
 import dev.kangoo.core.product.Product;
 import dev.kangoo.core.product.ProductDto;
 import dev.kangoo.mock.ProductDtoMock;
-import dev.kangoo.testcontainer.MongoContainer;
+import dev.kangoo.testcontainers.MongoContainer;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

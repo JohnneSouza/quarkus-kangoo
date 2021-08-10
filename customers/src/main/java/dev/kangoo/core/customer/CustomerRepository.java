@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepository<Customer> {
+public class CustomerRepository implements PanacheRepository<Customer> {
 
     public Optional<Customer> findUserByEmail(String email){
         return find("email", email).firstResultOptional();

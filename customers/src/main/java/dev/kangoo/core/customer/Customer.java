@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@Entity(name = "users")
+@Entity(name = "Customers")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {

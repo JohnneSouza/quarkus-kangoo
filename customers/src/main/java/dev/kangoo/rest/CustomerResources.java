@@ -2,7 +2,7 @@ package dev.kangoo.rest;
 
 import dev.kangoo.core.customer.Customer;
 import dev.kangoo.core.customer.CustomerDto;
-import dev.kangoo.core.customer.UserService;
+import dev.kangoo.core.customer.CustomerService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -28,7 +28,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class CustomerResources {
 
     @Inject
-    UserService userService;
+    CustomerService customerService;
 
     @POST
     @Transactional
@@ -37,7 +37,7 @@ public class CustomerResources {
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
     public Response register(@Valid CustomerDto user){
         return Response.status(Response.Status.CREATED)
-                .entity(userService.createUser(user, user.getPassword())).build();
+                .entity(customerService.createUser(user, user.getPassword())).build();
     }
 
     @PUT
@@ -48,15 +48,15 @@ public class CustomerResources {
     @Path("{id}")
     public Response update(@Valid CustomerDto user, @PathParam("id") Long id){
         return Response.status(Response.Status.OK)
-                .entity(userService.updateUser(user, id, user.getPassword())).build();
+                .entity(customerService.updateUser(user, id, user.getPassword())).build();
     }
 
     @GET
-    @Operation(summary = "Retrieve all Custumers")
+    @Operation(summary = "Retrieve all Customers")
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     public Iterable<Customer> findAll(){
-        return userService.findAll();
+        return customerService.findAll();
     }
 
     @GET
@@ -65,7 +65,7 @@ public class CustomerResources {
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("{id}")
     public Customer findUserById(@PathParam("id") int id){
-        return userService.findUserById(id);
+        return customerService.findUserById(id);
     }
 
     @GET
@@ -74,7 +74,7 @@ public class CustomerResources {
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class)))
     @Path("email/{email}")
     public Customer findUserByEmail(@PathParam("email") String email){
-        return userService.finderByEmail(email);
+        return customerService.finderByEmail(email);
     }
 
     @GET
@@ -83,7 +83,7 @@ public class CustomerResources {
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON))
     @Path("activate/{key}")
     public Response activateUserAccount(@PathParam("key") String key){
-        userService.activateUser(key);
+        customerService.activateUser(key);
         return Response.status(Response.Status.OK).build();
     }
 
