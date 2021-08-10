@@ -13,7 +13,7 @@ public class EmailService {
     Mailer mailer;
 
     public void sendActivationEmail(String email, String activationKey){
-        mailer.send(Mail.withText(email, "Confirm your account on Easy&Com", "Thank you, your key:" +
+        mailer.send(Mail.withText(email, "Confirm your account on Kangoo", "Thank you, your key:" +
                 activationKey));
     }
 

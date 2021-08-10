@@ -14,22 +14,23 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class UserService {
+public class CustomerService {
 
-    private final UserRepository userRepository;
+    @Inject
+    CustomerRepository customerRepository;
 
     @Inject
     EmailService emailService;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     public Customer createUser(CustomerDto customerDto, String password){
         String activationKey = UUID.randomUUID().toString();
         validateEmail(customerDto.getEmail());
         emailService.sendActivationEmail(customerDto.getEmail(), activationKey);
-        return userRepository.save(
+        return customerRepository.save(
                 Customer.builder()
                 .password(BcryptUtil.bcryptHash(password))
                 .firstName(customerDto.getFirstName())
@@ -45,38 +46,38 @@ public class UserService {
         Customer currentCustomer = findUserById(id);
         currentCustomer.setLastName(newUser.getLastName());
         currentCustomer.setFirstName(newUser.getFirstName());
-        userRepository.persist(currentCustomer);
+        customerRepository.persist(currentCustomer);
         return currentCustomer;
     }
 
     public Customer findUserById(long id){
-        return userRepository.findById(id)
+        return customerRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
     }
 
     public Customer finderByEmail(String email){
-        return userRepository.findUserByEmail(email)
+        return customerRepository.findUserByEmail(email)
                 .orElseThrow(NotFoundException::new);
     }
 
     public List<Customer> findAll() {
-        return userRepository.findAll().list();
+        return customerRepository.findAll().list();
     }
 
     public void activateUser(String key) {
-        Customer customer = userRepository.findActivationKey(key)
+        Customer customer = customerRepository.findActivationKey(key)
                 .orElseThrow(() -> new InvalidActivationKeyException("Invalid activation key"));
         if (!customer.isActive()){
             customer.setActive(true);
             customer.setActivationKey(null);
-            userRepository.persist(customer);
+            customerRepository.persist(customer);
         } else {
             throw new AccountAlreadyActiveException("Account is already active");
         }
     }
 
     private void validateEmail(String email) {
-        if(userRepository.findUserByEmail(email).isPresent()){
+        if(customerRepository.findUserByEmail(email).isPresent()){
             throw new EmailTakenException("This email is already registered");
         }
     }
