@@ -2,14 +2,13 @@ package dev.kangoo.core.customer;
 
 import dev.kangoo.core.AccountAlreadyActiveException;
 import dev.kangoo.core.InvalidActivationKeyException;
-import dev.kangoo.core.email.EmailTakenException;
 import dev.kangoo.core.email.EmailService;
+import dev.kangoo.core.email.EmailTakenException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +25,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer createUser(CustomerDto customerDto, String password){
+    public CustomerDto createUser(CustomerDto customerDto, String password){
         String activationKey = UUID.randomUUID().toString();
         validateEmail(customerDto.getEmail());
         emailService.sendActivationEmail(customerDto.getEmail(), activationKey);
@@ -36,7 +35,6 @@ public class CustomerService {
                 .firstName(customerDto.getFirstName())
                 .lastName(customerDto.getLastName())
                 .email(customerDto.getEmail())
-                .createdAt(LocalDate.now())
                 .activationKey(activationKey)
                 .active(false)
                 .build());
@@ -65,11 +63,10 @@ public class CustomerService {
     }
 
     public void activateUser(String key) {
-        Customer customer = customerRepository.findActivationKey(key)
+        Customer customer = customerRepository.findCustomerByActivationKey(key)
                 .orElseThrow(() -> new InvalidActivationKeyException("Invalid activation key"));
         if (!customer.isActive()){
             customer.setActive(true);
-            customer.setActivationKey(null);
             customerRepository.persist(customer);
         } else {
             throw new AccountAlreadyActiveException("Account is already active");
@@ -80,5 +77,9 @@ public class CustomerService {
         if(customerRepository.findUserByEmail(email).isPresent()){
             throw new EmailTakenException("This email is already registered");
         }
+    }
+
+    public boolean deleteUserById(long id) {
+        return this.customerRepository.deleteById(id);
     }
 }
