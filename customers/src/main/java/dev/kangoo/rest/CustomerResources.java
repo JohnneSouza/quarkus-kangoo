@@ -7,6 +7,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+@Tag(name = "Customers")
 @Path("/customers")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
@@ -40,9 +42,9 @@ public class CustomerResources {
     @APIResponse(responseCode = "200", content =
     @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = CustomerDto.class, required = true)))
     @Path("{id}")
-    public Response update(@Valid CustomerDto user, @PathParam("id") Long id){
+    public Response update(@Valid CustomerDto customer, @PathParam("id") Long id){
         return Response.status(Response.Status.OK)
-                .entity(customerService.updateUser(user, id, user.getPassword())).build();
+                .entity(customerService.updateUser(customer, id, customer.getPassword())).build();
     }
 
     @GET

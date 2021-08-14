@@ -17,7 +17,7 @@ public class EmailService {
                 "Thank you! \n " +
                         "Your activation key: " + activationKey + "\n" +
                         "Or you can use the link below \n" +
-                        "https://customers.kagoo.dev/customers/activation/" + activationKey));
+                        "https://customers.kangoo.dev/customers/activation/" + activationKey));
     }
 
 }

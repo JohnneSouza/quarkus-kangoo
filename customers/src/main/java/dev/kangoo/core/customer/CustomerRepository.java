@@ -3,10 +3,14 @@ package dev.kangoo.core.customer;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.Optional;
 
 @ApplicationScoped
 public class CustomerRepository implements PanacheRepository<Customer> {
+
+    @Inject
+    CustomerMapper customerMapper;
 
     public Optional<Customer> findUserByEmail(String email){
         return find("email", email).firstResultOptional();
@@ -16,13 +20,13 @@ public class CustomerRepository implements PanacheRepository<Customer> {
         return findByIdOptional(id);
     }
 
-    public Customer save(Customer customer){
+    public CustomerDto save(Customer customer){
         persist(customer);
-        return customer;
+        return customerMapper.customerToDto(customer);
     }
 
 
-    public Optional<Customer> findActivationKey(String key) {
+    public Optional<Customer> findCustomerByActivationKey(String key) {
         return find("activationKey", key).firstResultOptional();
     }
 }
